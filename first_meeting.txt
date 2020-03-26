@@ -1,0 +1,25 @@
+Date: 26th March 2020
+Time: 11:00
+Duration of Meeting: 22 mins 45 seconds
+Meeting Platform: Microsoft Team
+
+All master students attend the meeting
+
+
+1. Group Graded Homework 2000 words
+Date Submission: TBC
+Description: Four option domains (MRP Project) will be selected for the best domain
+             Each student require to write estimate 500 words
+Submission: Unknown
+
+
+2a. Covid-19 World Map Dashboard Group Assignment
+Date Submission: April 27
+Description: Web-based Dashboard for World map of Covid-19
+Submission: Github
+
+
+2b. Malaysia Covid-19 Dashboard Group Assignment
+Date Submission: April 27
+Description: Web-based Dashboard for Malaysia of Covid-19
+Submission: Github
