@@ -1,0 +1,35 @@
+Date: 6th April 2020
+Time: 10:30am
+Duration of Meeting: 37 mins and 25 seconds
+Meeting Platform: Microsoft Team
+
+All master students attend the meeting.
+
+1. Covid-19 World Map Dashboard Group Assignment
+Date submission: 27th April 2020
+Meeting time: 10:30am until 10:50am
+Description: Dashboard Covid-19 for March only. The students specifly the tasks.
+             Haziq do the map, Marni do the number, Amal do the graph and Gary do the information.
+             The students will do together for layout and will be confirm date. 
+             Data source from Kaggle for the month of March.
+             Individual tasks must be done by 25th April 2020.
+
+Target date: 25th April 2020
+
+
+2. Intelligent System Group Assignment 
+Date Submission: TBC
+Meeting time: 10:50 until 11:00am
+Description: Genetic Algorithm is prefer, The students will collect questions for Sir Ibrahim by Sunday 12th April 2020.
+             Amal and Marni will ask Sir Ibrahim.
+
+Target date: TBC
+
+3. Group Graded Homework 2000 words
+Date Submission: 23th April 2020
+Haziq - Text mining
+The rest - Still deciding
+
+Target Date: 19th April 2020
+
+
