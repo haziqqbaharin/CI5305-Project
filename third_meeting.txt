@@ -1,0 +1,18 @@
+Date: 13th April 2020
+Time: 10:45am
+Duration of Meeting: 1 hour and 9 mins
+Meeting Platform: Microsoft Team
+
+All master students attend the meeting
+
+1. IS Group Assignment
+Date Submission: 4th May 2020
+Description: The students come out with questions from our own time. During the meeting, the students compiled with 32 questions.
+             The students will contact Sir Ibrahim via email, whatsapp and microsoft team. The students will contact him as soon as possbile. 
+             The solution will be using Genetic Algorithm for this Intelligent Timetabling Agent. 
+Submission: LMS as word document
+
+2. Covid-19 Dashboard Group asssignment 
+Date Submission: 27th April 2020
+Description: The students got the dataset.
+Submission: Github
