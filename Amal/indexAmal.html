@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<head>
+<script src="http://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="indexgraph.css">
+<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+<div class='page-wrapper'>
+  <div class='row'>
+    <h1 class="title-style">COVID-19 Statistics (March 2020)</h1>
+  </div>
+
+  <div class='row'>
+    <div class='column'>
+      <div id = "confirmedsum" class="placeholder">confirmed cases</div>
+        <script src = "confirmed.js"></script>
+    </div>
+    <div class='column'>
+      <div class="placeholder">
+        deaths
+      </div>
+    </div>
+    <div class='column'>
+      <div class="placeholder">
+        recovered
+      </div>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='column'>
+      <div id = "graph1" ></div>
+     <object data="TotalConfirmedGraph.html" width="350" height="250"></object>
+    </div>
+    <div class='column'>
+      <div id = "graph2"></div>
+      <object data="TotalDeathGraph.html" width="350" height="250"></object>
+    </div>
+    <div class='column'>
+      <div id = "graph3"></div>
+    <object data="TotalRecoveredGraph.html" width="350" height="250"></object>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='large-column'>
+      <div class="tooltip"></div>
+      <div id="map" class="item-map-style"></div>
+      
+    </div>
+    
+    <div class='column'>
+      list
+    </div>
+  </div>
+</div>
+<script>
+  var format = d3.format(",");
+
+var margin = {top: 5, right: 5, bottom: 5, left: 5},
+            width = 1250 - margin.left - margin.right,
+            height = 600 - margin.top - margin.bottom;
+
+var tooltip = d3.select("div.tooltip");
+
+var projection = d3.geoEquirectangular()
+                  .center([0, -25])
+                  .scale(200)
+                  .translate( [width / 2, height / 1.5]);
+
+var path = d3.geoPath().projection(projection);
+
+
+var svg = d3.select("#map")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append('g');
+
+
+d3.queue()
+  .defer(d3.json,"world-110m.json")
+  .defer(d3.csv, "covid-19 dataset.csv")
+  .await(ready);
+  function ready(error, world, dataset)
+{
+    if (error) throw error;
+
+    console.log(dataset);
+
+    var countries = topojson.feature( world, world.objects.countries).features;
+
+    var name = [];
+    var confirmed = [];
+    var deaths = [];
+    var recovered = [];
+
+    dataset.forEach(function(d){
+      return name[d.id] = d.name;
+    });
+    dataset.forEach(function(d){
+      return confirmed[d.id] = d.confirmed;
+    });
+    dataset.forEach(function(d){
+      return deaths[d.id] = d.deaths;
+    });
+    dataset.forEach(function(d){
+      return recovered[d.id] = d.recovered;
+    });
+
+
+
+    svg.selectAll("countries")
+    .data(countries)
+    .enter().append("path")
+    .attr("class", "countries")
+    .attr("d", path)
+    .on("mouseover",function(d,i){
+        d3.select(this).classed("hover", true)
+        tooltip.classed("hidden", false)
+    })
+    .on("mousemove",function(d){
+        tooltip.style("top", (d3.event.pageY) + "px")
+               .style("left", (d3.event.pageX + 10) + "px")
+               .html("<b style='font-size:16px'>" + name[d.id] + "</b>" +
+                    "<br/>"+ "Confirmed Cases:" + "<b>"+ confirmed[d.id]+ "</b>" +
+                    "<br/>"+ "Deaths:" + "<b style='color:red'>" + deaths[d.id]+ "</b>" +
+                    "<br/>"+ "Recovered:" + "<b style='color:green'>" + recovered[d.id]+ "</b>")
+    })
+    .on("mouseout",function(d,i){
+        d3.select(this).classed("hover", false)
+        tooltip.classed("hidden", true)
+    })
+    .call(d3.zoom().scaleExtent([1, 8]).on('zoom', function () {
+      svg.attr("transform", d3.event.transform)
+    }))
+    .on("mousedown.zoom", null)
+    .on("touchstart.zoom", null)
+    .on("touchmove.zoom", null)
+    .on("touchend.zoom", null);
+
+
+    svg.append("path")
+        .attr( "class", "country-borders" )
+        .attr("d", path(topojson.mesh( world, world.objects.countries, function( a, b)
+        {
+            return a !== b;
+        })));
+
+};
+</script>
+</body>
+</html>

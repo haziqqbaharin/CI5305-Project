@@ -1,0 +1,55 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+text1 {
+    font-family: arial;
+    font-size: 3px;
+}
+
+path.line1 {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
+}
+path.line2 {
+  fill: none;
+  stroke: red;
+  stroke-width: 1px;
+}
+path.line3 {
+  fill: none;
+  stroke: green;
+  stroke-width: 1px;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: slategray;
+  shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+  
+  .grid line {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+  }
+  
+  .grid path {
+    stroke-width: 0;
+  }
+
+  /* Style the dots by assigning a fill and stroke */
+.dot {
+  fill: #ffab00;
+  stroke: #fff;
+}
