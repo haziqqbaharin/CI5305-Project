@@ -4,83 +4,170 @@
 
 <head>
 <script src="http://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/topojson.v2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body>
-<div class='page-wrapper'>
+<div class="page-wrapper">
   <div class='row'>
     <h1 class="title-style">COVID-19 Statistics (March 2020)</h1>
   </div>
 
   <div class='row'>
     <div class='column'>
-      <div class="placeholder">
-        confirmed cases
-      </div>
+	<div id="confirmedValue" class="monospace"><b class="thicker">Confirmed</b><br><br></div>
     </div>
     <div class='column'>
-      <div class="placeholder">
-        deaths
-      </div>
+        <div id="deathsValue" class="monospace"><b class="thicker">Deaths</b><br><br></div>
     </div>
     <div class='column'>
-      <div class="placeholder">
-        recovered
-      </div>
+        <div id="recoveredValue" class="monospace"><b class="thicker">Recovered</b><br><br></div>
     </div>
   </div>
-
+  <br>
   <div class='row'>
     <div class='column'>
-      <div class="placeholder">
-        confirmed cases
-      </div>
+     <object data="TotalConfirmedGraph.html" width="500" height="250"></object>
     </div>
     <div class='column'>
-      <div class="placeholder">
-        deaths
-      </div>
+      <object data="TotalDeathGraph.html" width="500" height="250"></object>
     </div>
     <div class='column'>
-      <div class="placeholder">
-        recovered
-      </div>
+    <object data="TotalRecoveredGraph.html" width="500" height="250"></object>
     </div>
   </div>
-
-  <div class='row'>
-    <div class='large-column'>
-      <div class="tooltip"></div>
-      <div id="map" class="item-map-style"></div>
+  <br>
+    <div class='row'style = 'background-color: #EEEEEE'>
+      <div class='row'>
+        <div class="tooltip"></div>
+        <div id="map" class="item-map-style"></div>
+    </div>
+  </div>
+  <div class='row'  style = 'background-color: #E1E1E1'>
+    <div class='row'>
+      <h1 class="title-style">TOP 15 Countries (Confirmed Cases)</h1>
     </div>
     <div class='column'>
-      list
+      <object data="radial.html" width="700" height="750"></object>
+    </div>
+    <div class='column'>
+      <div id="countriesTable"</div>
     </div>
   </div>
 </div>
 </body>
 
+<!-- Gary -->
+<!-- Script to create table based on covid-19Top15 csv dataset -->
+<script>
+function tabulate(data, display_columns, backend_columns) {
+    var table = d3.select("#countriesTable").append("table")
+            .attr("style", "margin-left: 100px")
+            .attr("style", "border: 1px solid #ddd; padding: 4px;background-color:#EEEEEE"),
+        thead = table.append("thead"),
+        tbody = table.append("tbody");
+    thead.append("tr")
+        .selectAll("th")
+        .data(display_columns)
+        .enter()
+        .append("th")
+        .attr("style", "border: 1px solid #ddd; padding: 4px; background-color:lightsteelblue")
+            .text(function(column) { return column; });
+    var rows = tbody.selectAll("tr")
+        .data(data)
+        .enter()
+        .append("tr");
+    var cells = rows.selectAll("td")
+        .data(function(row) {
+            return backend_columns.map(function(column) {
+                return {column: column, value: row[column]};
+            });
+        })
+        .enter()
+        .append("td")
+        .attr("style", "font-family: Arial")
+        .attr("style", "border: 1px solid #ddd; padding: 4px; ")
+            .html(function(d) { return d.value; });
 
+    return table;
+}
+
+d3.csv("covid-19Top15.csv", function(error, csv_data) {
+  if (error) throw error;
+
+ var countriesTable = tabulate(csv_data, ["Countries", "Confirmed", "Deaths", "Recovered"], ["Countries", "Confirmed", "Deaths", "Recovered"]);
+});
+</script>
+
+<!-- Sumarni-->
+<!-- Script to display the three values based on covid-19 csv dataset -->
+<script>
+d3.csv("covid-19 dataset.csv", function(data){
+
+    var totalConfirmed = [d3.sum(data.map(function(d){
+		return d.confirmed}))];
+
+	d3.select('#confirmedValue')
+    .selectAll('p1')
+    .data(totalConfirmed)
+    .enter()
+    .append('p1')
+    .text(function(d){
+		return d;})
+
+    var totalDeaths = [d3.sum(data.map(function(d){
+		return d.deaths}))];
+
+	d3.select('#deathsValue')
+    .selectAll('p1')
+    .data(totalDeaths)
+    .enter()
+    .append('p1')
+    .text(function(d){
+		return d;})
+
+    var totalRecovered = [d3.sum(data.map(function(d){
+    return d.recovered}))];
+
+  d3.select('#recoveredValue')
+    .selectAll('p1')
+    .data(totalRecovered)
+    .enter()
+    .append('p1')
+    .text(function(d){
+    return d;})
+
+	});
+</script>
+
+<!-- Haziq -->
+<!-- Script to display interactive map based on covid-19 csv dataset -->
 <script>
   var format = d3.format(",");
 
+  //size of svg to contained the d3 map
   var margin = {top: 5, right: 5, bottom: 5, left: 5},
-              width = 1250 - margin.left - margin.right,
-              height = 600 - margin.top - margin.bottom;
+              width = 1600 - margin.left - margin.right,
+              height = 700 - margin.top - margin.bottom;
 
+
+  //initialize toopltip
   var tooltip = d3.select("div.tooltip");
 
+  //initialize projection for d3 map scaling using geoEquirectangular format
   var projection = d3.geoEquirectangular()
                     .center([0, -25])
-                    .scale(200)
+                    .scale(210)
                     .translate( [width / 2, height / 1.5]);
 
+
+  //initialize path variable for d3 map
   var path = d3.geoPath().projection(projection);
 
-
+  //initialize and append svg on id map
   var svg = d3.select("#map")
               .append("svg")
               .attr("width", width)
@@ -88,6 +175,7 @@
               .append('g');
 
 
+  //using d3 queue library to load to datasets
   d3.queue()
     .defer(d3.json,"world-110m.json")
     .defer(d3.csv, "covid-19 dataset.csv")
@@ -98,33 +186,41 @@
 
       console.log(dataset);
 
+      //variable extracting features of world map based on loaded topojson
       var countries = topojson.feature( world, world.objects.countries).features;
 
+      //variables to store name of country and the required values
       var name = [];
       var confirmed = [];
       var deaths = [];
       var recovered = [];
 
+      //function to get country name based on matching country id between the two loaded dataset
       dataset.forEach(function(d){
         return name[d.id] = d.name;
       });
+
+      //function to get confirmed cases values based on matching country id between the two loaded dataset
       dataset.forEach(function(d){
-        return confirmed[d.id] = d.confirmed;
-      });
-      dataset.forEach(function(d){
-        return deaths[d.id] = d.deaths;
-      });
-      dataset.forEach(function(d){
-        return recovered[d.id] = d.recovered;
+        {return confirmed[d.id] = d.confirmed;}
       });
 
+      //function to get deaths values based on matching country id between the two loaded dataset
+      dataset.forEach(function(d){
+        {return deaths[d.id] = d.deaths;}
+      });
 
+      //function to get recovered values based on matching country id between the two loaded dataset
+      dataset.forEach(function(d){
+        {return recovered[d.id] = d.recovered;}
+      });
 
       svg.selectAll("countries")
       .data(countries)
       .enter().append("path")
       .attr("class", "countries")
       .attr("d", path)
+      //mouse function enabling interaction of map via tooltip
       .on("mouseover",function(d,i){
           d3.select(this).classed("hover", true)
           tooltip.classed("hidden", false)
@@ -132,6 +228,7 @@
       .on("mousemove",function(d){
           tooltip.style("top", (d3.event.pageY) + "px")
                  .style("left", (d3.event.pageX + 10) + "px")
+                 //show the name and values on tooltip
                  .html("<b style='font-size:16px'>" + name[d.id] + "</b>" +
                       "<br/>"+ "Confirmed Cases:" + "<b>"+ confirmed[d.id]+ "</b>" +
                       "<br/>"+ "Deaths:" + "<b style='color:red'>" + deaths[d.id]+ "</b>" +
@@ -141,15 +238,18 @@
           d3.select(this).classed("hover", false)
           tooltip.classed("hidden", true)
       })
+      //d3 zooming function to enable zooming of the map
       .call(d3.zoom().scaleExtent([1, 8]).on('zoom', function () {
         svg.attr("transform", d3.event.transform)
       }))
+      //disable panning ability from d3 zoom
       .on("mousedown.zoom", null)
       .on("touchstart.zoom", null)
       .on("touchmove.zoom", null)
       .on("touchend.zoom", null);
 
 
+      //appending path to svg to draw borders based on data from topojson dataset
       svg.append("path")
           .attr( "class", "country-borders" )
           .attr("d", path(topojson.mesh( world, world.objects.countries, function( a, b)
