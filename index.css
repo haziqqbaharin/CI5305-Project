@@ -53,6 +53,8 @@ svg
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
+   align-items: center;
+  justify-content: space-around;
 }
 
 .large-column {
@@ -67,9 +69,77 @@ svg
   background-color: #F4F6F7;
 }
 
+#confirmedValue {
+  border-radius: 15px;
+  background: #b0c4de;
+  padding: 20px; 
+  width: 250px;
+  height: 80px; 
+  text-align: center;
+  font-size: 175%;
+  color: blue;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+.monospace {
+  font-family: "Lucida Console", Courier, monospace;
+}
+
+b.thicker {
+	font-weight: 900;
+	font-size: 120%;
+	font-family: "Times New Roman", Times, serif;
+}
+
+#deathsValue {
+  border-radius: 15px;
+  background: #b0c4de;
+  padding: 20px; 
+  width: 250px;
+  height: 80px; 
+  text-align: center;
+  font-size: 175%;
+  color: red;
+  letter-spacing: 5px;
+  font-weight: bold;
+  
+}
+
+b.thicker {
+	font-weight: 900;
+	font-size: 130%;
+	color: black;
+	letter-spacing: 0px;
+	font-family: "Times New Roman", Times, serif;
+}
+
+#recoveredValue {
+  border-radius: 15px;
+  background: #b0c4de;
+  padding: 20px; 
+  width: 250px;
+  height: 80px; 
+  text-align: center;
+  font-size: 175%;
+  color: green;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+b.thicker {
+	font-weight: 900;
+	font-size: 120%;
+	font-family: "Times New Roman", Times, serif;
+}
 
 .placeholder {
-  background-color: orange;
+  background-color: red;
+  height: 100px;
+  margin:15px 30px 15px 30px;
+}
+.placeholder {
+  background-color: green;
   height: 100px;
   margin:15px 30px 15px 30px;
 }
@@ -80,14 +150,27 @@ svg
   font-family: 'Titillium Web', sans-serif;
   position: relative;
   text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
-  font-size: 50px;
+  font-size: 35px;
   line-height: 40px;
   color: #355681;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(53,86,129, 0.3);
+  text-decoration: underline;
 }
 
 .item-map-style{
   align:center;
   margin:15px 30px 15px 30px;
+}
+
+p {
+  font-weight: 600;
+  font-family: 'Titillium Web', sans-serif;
+  position: relative;
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
+  font-size: 25px;
+  line-height: 40px;
+  color: #355681;
+  text-align: left;
+  text-transform: uppercase;
+  text-decoration: underline;
 }
