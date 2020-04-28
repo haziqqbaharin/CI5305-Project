@@ -116,6 +116,14 @@ d3.csv("covid-19Totaldataset.csv", function(error, data) {
   // add the Y Axis
   svg.append("g")
   .call(d3.axisLeft(y).tickFormat(function(d){return parseInt(d/1000)+"k";}));
+  
+  svg.append("text")
+    .attr("x", (width / 2))             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")
+    .style("font-size", "12px") 
+    .style("text-decoration", "underline")  
+    .text("Number of confirmed cases");
 
 });
 
